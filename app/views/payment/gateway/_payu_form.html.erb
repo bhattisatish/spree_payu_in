@@ -1,0 +1,22 @@
+<%= form_tag(@gateway.external_payment_url, :method=>:post) do %>
+  <%= hidden_field_tag 'key', @gateway.merchant_id %>
+  <%= hidden_field_tag 'txnid', "#{@order.id}" %>
+  <%= hidden_field_tag 'amount', @order.total.to_f %>
+  <%= hidden_field_tag 'productinfo', @order.number %>
+  <%= hidden_field_tag 'firstname', @order.bill_address.firstname %>
+  <%= hidden_field_tag 'Lastname', @order.bill_address.lastname %>
+  <%= hidden_field_tag 'address1', @order.bill_address.address1 %>
+  <%= hidden_field_tag 'address2', @order.bill_address.address2 %>
+  <%= hidden_field_tag 'City', @order.bill_address.city %>
+  <%= hidden_field_tag 'State', @order.bill_address.state.name %>
+  <%= hidden_field_tag 'Country', @order.bill_address.country.name %>
+  <%= hidden_field_tag 'Zipcode', @order.bill_address.zipcode %>
+  <%= hidden_field_tag 'email', @order.user.email %>
+  <%= hidden_field_tag 'phone', @order.bill_address.phone %>
+  <%= hidden_field_tag 'surl', payment_callback_url %>
+  <%= hidden_field_tag 'Furl', payment_callback_url(:status=>'failed') %>
+  <%= hidden_field_tag 'curl', payment_callback_url(:status=> 'canceled') %>
+  <%= hidden_field_tag 'udf1', params[:payment_method_id] %>
+  <%= hidden_field_tag 'Hash', @gateway.hash(@order, params[:payment_method_id]) %>
+  <%= submit_tag 'Proceed to payment' %>
+<% end %>
