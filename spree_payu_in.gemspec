@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_payu_in'
   s.version     = '0.0.1'
-  s.summary     = 'TODO: Add gem summary here'
+  s.summary     = 'PayU.in payment method for spreecommerce'
   s.description = 'spree_payu_in adds payu.in payment method to spree commerce'
 
   s.required_ruby_version = '>= 1.8.7'
