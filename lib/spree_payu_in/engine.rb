@@ -1,7 +1,6 @@
 module SpreePayuIn
   class Engine < Rails::Engine
     engine_name 'spree_payu_in'
-    isolate_namespace Spree
 
     config.autoload_paths += %W(#{config.root}/lib)
 
