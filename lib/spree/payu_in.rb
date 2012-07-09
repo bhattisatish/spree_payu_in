@@ -10,7 +10,7 @@ module Spree::PayuIn
   end
 
   def before_payment_options
-    payment_method = PaymentMethod.find_by_type('Gateway::PayuIn')
+    payment_method = Spree::PaymentMethod.find_by_type('Spree::Gateway::PayuIn')
     @gateway = payment_method.provider
     render 'checkout/payment_options'
   end
@@ -23,7 +23,7 @@ module Spree::PayuIn
 
   def payu_in_payment
     load_order
-    payment_method = PaymentMethod.find(params[:order][:payments_attributes].first[:payment_method_id])
+    payment_method = Spree::PaymentMethod.find(params[:order][:payments_attributes].first[:payment_method_id])
     @gateway = payment_method.provider
     render "checkout/edit"
   end
@@ -33,21 +33,21 @@ module Spree::PayuIn
   end
 
   def gateway_callback
-    @order = Order.find(params[:txnid])
+    @order = Spree::Order.find(params[:txnid])
     if params[:status] == 'failed'
-      payment_method = PaymentMethod.find(params['udf1'])
+      payment_method = Spree::PaymentMethod.find(params['udf1'])
       flash[:notice] = "Payment processing failed. Please choose a different payment option, or try again."
       @gateway = payment_method.provider
       render 'checkout/failed'
     elsif params[:status] == 'canceled'
       flash[:notice] = "You cancelled payment. Please choose a different payment option, or try again."
-      payment_method = PaymentMethod.find(params['udf1'])
+      payment_method = Spree::PaymentMethod.find(params['udf1'])
       @gateway = payment_method.provider
       render 'checkout/failed'
     else
       puts "Payment successful. payu_in_notify:#{params.inspect}"
       payment = @order.payments.create(:amount => BigDecimal.new(params["amount"]),
-                                                :source => PayuPayment.new_from(params),
+                                                :source => Spree::PayuPayment.new_from(params),
                                                 :payment_method_id => params['udf1'])
 
       @order.state = 'payment'
@@ -75,6 +75,6 @@ module Spree::PayuIn
 
   private
   def payment_method
-    PaymentMethod.find(params[:payment_method_id])
+    Spree::PaymentMethod.find(params[:payment_method_id])
   end
 end

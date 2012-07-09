@@ -1,6 +1,6 @@
 class PayuPayment < ActiveRecord::Base
   has_many :payments, :as => :source
-  
+
   def self.new_from(params)
     PayuPayment.new(
     :payment_id=> params['mihpayid'],
@@ -12,7 +12,7 @@ class PayuPayment < ActiveRecord::Base
     :discount=> params['discount'],
     :json=> params.to_json) 
   end
-  
+
   def process!(payment)
   end
 end
